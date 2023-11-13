@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "raylib": "*"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "name": "raylib-javascript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
