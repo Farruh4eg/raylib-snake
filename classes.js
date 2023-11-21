@@ -1,4 +1,3 @@
-const { isBetween } = require('./helper');
 const r = require('raylib');
 
 class Rectangle {
@@ -33,14 +32,37 @@ class Rectangle {
       : Math.sqrt(this.width * this.width + this.height * this.height);
   }
 
-  isPointInside(posX, posY) {
-    if (
-      isBetween(this.posX, this.posX + this.width, posX) &&
-      isBetween(this.posY, this.posY + this.height, posY)
-    ) {
-      return true;
-    }
-    return false;
+  isIntersecting(otherRect) {
+    return (
+      this.posX < otherRect.posX + otherRect.width &&
+      this.posX + this.width > otherRect.posX &&
+      this.posY < otherRect.posY + otherRect.height &&
+      this.posY + this.height > otherRect.posY
+    );
+  }
+
+  setVelocity(velocity) {
+    this.velocity = velocity;
+  }
+
+  /**
+   * Deletes (moves off-screen) this element.
+  @param {Number} screenWidth - screen width (in pixels)
+  @param {Number} screenHeight - screen height (in pixels)
+  @returns {void}
+  */
+  remove(screenWidth, screenHeight) {
+    this.posX -= screenWidth * 5;
+    this.posY -= screenHeight * 5;
+  }
+
+  static getCenter(rectangleObj) {
+    let obj = {};
+
+    obj.posX = (rectangleObj.posX + rectangleObj.width) / 2;
+    obj.posY = (rectangleObj.posY + rectangleObj.height) / 2;
+
+    return obj;
   }
 
   controls() {
@@ -50,16 +72,16 @@ class Rectangle {
     const keyRight = r.KEY_D;
 
     if (r.IsKeyDown(keyRight)) {
-      this.posX++;
+      this.posX += this.velocity;
     }
     if (r.IsKeyDown(keyLeft)) {
-      this.posX--;
+      this.posX -= this.velocity;
     }
     if (r.IsKeyDown(keyUp)) {
-      this.posY--;
+      this.posY -= this.velocity;
     }
     if (r.IsKeyDown(keyDown)) {
-      this.posY++;
+      this.posY += this.velocity;
     }
     return this;
   }
